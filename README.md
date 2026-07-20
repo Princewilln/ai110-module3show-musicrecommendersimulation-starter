@@ -11,23 +11,32 @@ Your goal is to:
 - Evaluate what your system gets right and wrong
 - Reflect on how this mirrors real world AI recommenders
 
-Replace this paragraph with your own summary of what your version does.
+This project builds a small music recommender that simulates how a streaming service might connect a user’s taste profile to songs in a catalog. The system uses a simple content-based approach: it looks at song features like genre, mood, energy, and acousticness, compares them to a user’s preferences, and ranks songs by how well they match.
 
 ---
 
 ## How The System Works
 
-Explain your design in plain language.
+Real recommendation systems usually combine many signals, such as what a user has listened to, what similar users enjoy, and what the content itself looks like. In this simulation, I focus on the content-based side: the recommender compares a user’s taste profile to the attributes of each song and tries to find songs that feel like the right fit. The system prioritizes clear, interpretable features such as genre, mood, energy, valence, and acousticness, because those are easy to connect to a user’s stated preferences and to a listener’s idea of a song’s "vibe".
 
-Some prompts to answer:
+### Features used in the simulation
 
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
+- `Song` features:
+  - `genre`
+  - `mood`
+  - `energy`
+  - `tempo_bpm`
+  - `valence`
+  - `danceability`
+  - `acousticness`
 
-You can include a simple diagram or bullet list if helpful.
+- `UserProfile` features:
+  - `favorite_genre`
+  - `favorite_mood`
+  - `target_energy`
+  - `likes_acoustic`
+
+The recommender scores each song by rewarding strong matches for categorical preferences like genre and mood, and by rewarding numerical closeness for values such as energy and valence. Songs are then ranked from highest to lowest score and returned as recommendations.
 
 ---
 
