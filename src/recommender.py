@@ -167,11 +167,14 @@ def recommend_songs(
     Functional implementation of the recommendation logic.
     Required by src/main.py
     """
-    scored = []
-    for song in songs:
-        score, reasons = score_song(user_prefs, song)
-        explanation = "; ".join(reasons)
-        scored.append((song, score, explanation))
+    scored = [
+        (song, score, "; ".join(reasons))
+        for song in songs
+        for score, reasons in [score_song(user_prefs, song)]
+    ]
+    # sort() mutates the list in place and is useful when you want to reorder the
+    # existing list directly; sorted() returns a new sorted list and is often more
+    # convenient when you want to keep the original order intact.
     scored.sort(key=lambda item: item[1], reverse=True)
     return scored[:k]
 
