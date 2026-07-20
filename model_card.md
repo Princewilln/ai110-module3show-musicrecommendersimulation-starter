@@ -70,6 +70,8 @@ Prompts:
 - Cases where the system overfits to one preference  
 - Ways the scoring might unintentionally favor some users  
 
+One weakness I noticed is that the recommender can become too focused on a single signal when the scoring weights are changed. In my experiment, making energy matter more caused songs that were close to the target energy to rise quickly even when they did not match the user’s genre or mood as well. That means the system can accidentally create a filter bubble by favoring a narrow type of song and making the recommendations feel less diverse. It also does not capture deeper musical taste, such as artist identity, lyrics, or personal history, so it may miss what a real listener would actually enjoy.
+
 ---
 
 ## 7. Evaluation  
@@ -84,6 +86,14 @@ Prompts:
 - Any simple tests or comparisons you ran  
 
 No need for numeric metrics unless you created some.
+
+I tested several very different user profiles to see whether the recommender would respond in a way that made sense. The first profile was a high-energy pop listener, and the top results were songs that matched both the preferred genre and mood. That felt reasonable, although I was a little surprised that Gym Hero kept appearing in some of the results for people who were not explicitly looking for intense pop. It made me realize the system is still picking up energy strongly, even when the user description is more about mood than force.
+
+The chill lo-fi profile produced a very different set of recommendations. Songs with lower energy and more acoustic qualities rose to the top, which made sense because that profile was asking for a calmer, quieter mood. The deep intense rock profile also behaved in a clear way: it preferred songs with high energy and a more forceful tone, so the recommendations shifted toward songs that felt more aggressive and dramatic.
+
+The adversarial profile was the most interesting one. I gave the system a user who wanted rock but also had a sad mood, which is a confusing combination in real life. The results still picked songs that matched the rock genre and energy, but the mood mismatch did not stop them from ranking highly. That told me the system is more comfortable following the visible features in the data than it is handling contradictory tastes.
+
+I also ran a small experiment by changing the weights so energy mattered more and genre mattered less. That changed the rankings noticeably, and it helped me see that the system is quite sensitive to its scoring rules. In plain terms, it is not just saying “this person likes pop” or “this person likes rock”; it is also strongly reacting to how close a song is to the target energy level.
 
 ---
 

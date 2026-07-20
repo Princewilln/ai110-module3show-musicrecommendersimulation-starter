@@ -60,8 +60,11 @@ def print_profile_results(
     user_prefs: Dict[str, Any],
     songs: List[Dict[str, Any]],
     k: int = 5,
+    use_experiment: bool = False,
 ) -> None:
-    recommendations = recommend_songs(user_prefs, songs, k=k)
+    recommendations = recommend_songs(
+        user_prefs, songs, k=k, use_experiment=use_experiment
+    )
 
     print(f"\nProfile: {profile_name}")
     print(
@@ -83,8 +86,15 @@ def print_profile_results(
 
 def main() -> None:
     songs = load_songs("data/songs.csv")
+    print("Running experiment: doubled energy weight and halved genre weight.\n")
     for profile in build_demo_profiles():
-        print_profile_results(profile["name"], profile["prefs"], songs, k=5)
+        print_profile_results(
+            profile["name"],
+            profile["prefs"],
+            songs,
+            k=5,
+            use_experiment=True,
+        )
 
 
 if __name__ == "__main__":

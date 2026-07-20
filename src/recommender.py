@@ -44,16 +44,26 @@ class Recommender:
     def __init__(self, songs: List[Song]):
         self.songs = songs
 
-    def recommend(self, user: UserProfile, k: int = 5) -> List[Song]:
+    def recommend(
+        self, user: UserProfile, k: int = 5, use_experiment: bool = False
+    ) -> List[Song]:
         ranked = []
         for song in self.songs:
-            score, _ = score_song(_profile_to_dict(user), _song_to_dict(song))
+            score, _ = score_song(
+                _profile_to_dict(user),
+                _song_to_dict(song),
+                use_experiment=use_experiment,
+            )
             ranked.append((song, score))
         ranked.sort(key=lambda item: item[1], reverse=True)
         return [song for song, _ in ranked[:k]]
 
-    def explain_recommendation(self, user: UserProfile, song: Song) -> str:
-        _, reasons = score_song(_profile_to_dict(user), _song_to_dict(song))
+    def explain_recommendation(
+        self, user: UserProfile, song: Song, use_experiment: bool = False
+    ) -> str:
+        _, reasons = score_song(
+            _profile_to_dict(user), _song_to_dict(song), use_experiment=use_experiment
+        )
         return "; ".join(reasons) if reasons else "No strong matching signals."
 
 
@@ -82,7 +92,9 @@ def load_songs(csv_path: str) -> List[Dict[str, Any]]:
 
 
 def score_song(
-    user_prefs: Dict[str, Any], song: Dict[str, Any]
+    user_prefs: Dict[str, Any],
+    song: Dict[str, Any],
+    use_experiment: bool = False,
 ) -> Tuple[float, List[str]]:
     """Score a song against a user profile and return a numeric rank plus explainable reasons."""
     prefs = _coerce_user_prefs(user_prefs)
@@ -91,10 +103,11 @@ def score_song(
     score = 0.0
     reasons: List[str] = []
 
+    genre_weight = 1.0 if use_experiment else 2.0
     if prefs.get("favorite_genre") and song_data.get("genre"):
         if song_data["genre"].lower() == prefs["favorite_genre"].lower():
-            score += 2.0
-            reasons.append("genre match (+2.0)")
+            score += genre_weight
+            reasons.append(f"genre match (+{genre_weight:.1f})")
         else:
             reasons.append("genre mismatch")
 
@@ -110,7 +123,8 @@ def score_song(
         energy_similarity = max(
             0.0, 1.0 - abs(float(song_data["energy"]) - target_energy)
         )
-        energy_points = 1.0 * energy_similarity
+        energy_weight = 2.0 if use_experiment else 1.0
+        energy_points = energy_weight * energy_similarity
         score += energy_points
         reasons.append(
             f"energy similarity (+{energy_points:.2f}): close to target {target_energy:.2f}"
@@ -155,13 +169,18 @@ def score_song(
 
 
 def recommend_songs(
-    user_prefs: Dict[str, Any], songs: List[Dict[str, Any]], k: int = 5
+    user_prefs: Dict[str, Any],
+    songs: List[Dict[str, Any]],
+    k: int = 5,
+    use_experiment: bool = False,
 ) -> List[Tuple[Dict[str, Any], float, str]]:
     """Rank songs by score and return the top-k recommendations with explanations."""
     scored = [
         (song, score, "; ".join(reasons))
         for song in songs
-        for score, reasons in [score_song(user_prefs, song)]
+        for score, reasons in [
+            score_song(user_prefs, song, use_experiment=use_experiment)
+        ]
     ]
     # sort() mutates the list in place and is useful when you want to reorder the
     # existing list directly; sorted() returns a new sorted list and is often more

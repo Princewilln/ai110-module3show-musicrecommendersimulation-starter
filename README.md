@@ -135,7 +135,8 @@ python -m src.main
 
 ### Profile 1 — High-Energy Pop
 
-```t(.venv) meltingtech@meltingtech:~/codepath/ai110-module3show-musicrecommendersimulation-starter$ python -m src.main
+```text
+(.venv) meltingtech@meltingtech:~/codepath/ai110-module3show-musicrecommendersimulation-starter$ python -m src.main
 Loaded songs: 18
 
 Profile: High-Energy Pop
@@ -249,6 +250,18 @@ Top 5 recommendations:
 - The recommender strongly favors exact genre and mood matches, which makes it feel predictable but also a bit rigid.
 - Energy similarity can push a song upward even when it misses on genre or mood, showing that the scoring recipe balances multiple signals.
 - The adversarial profile shows that the current logic can still return high-energy songs even when the user mood is contradictory, which is a useful reminder that the system is rule-based rather than emotionally nuanced.
+
+### Step 2: Look for Accuracy and Surprises
+
+Compare the recommendations for at least one profile against your own musical intuition. Ask yourself whether the results feel reasonable and whether anything looks surprising.
+
+For example, in the High-Energy Pop profile, Sunrise City ranked first. That result feels mostly right because the song matches the user’s preferred genre and mood, and its energy is very close to the target value of 0.80. In the current scoring logic in [src/recommender.py](src/recommender.py), this happens because genre contributes +2.0, mood contributes +1.0, and energy contributes a strong similarity bonus. A song that checks multiple boxes can easily rise to the top.
+
+A useful critique is that the system can still feel a bit too rigid. If the same song keeps appearing at the top of every list, it may mean the genre weight is too strong or that the dataset is too small to provide enough variety. That is a sign the recommender is following its rules very literally rather than capturing subtle musical taste.
+
+### Step 3: Run a Small Data Experiment
+
+I tested a weight-shift experiment by doubling the effect of energy and halving the effect of genre. In [src/recommender.py](src/recommender.py), the experimental mode changes the scoring rule so genre contributes 1.0 point for a match and energy contributes 2.0 times the similarity score. I verified the math by running the recommender again with [src/main.py](src/main.py). The recommendations became more energy-driven and a few songs shifted upward because they matched the target energy more closely. That made the results feel different rather than strictly more accurate, which is exactly the kind of sensitivity test this phase is meant to reveal.
 
 ## Experiments You Tried
 
