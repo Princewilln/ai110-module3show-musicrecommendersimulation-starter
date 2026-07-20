@@ -265,65 +265,36 @@ I tested a weight-shift experiment by doubling the effect of energy and halving 
 
 ## Experiments You Tried
 
-Use this section to document the experiments you ran. For example:
+I ran two main experiments while building this recommender.
 
-- What happened when you changed the weight on genre from 2.0 to 0.5
-- What happened when you added tempo or valence to the score
-- How did your system behave for different types of users
+- Weight-shift experiment: I doubled the effect of energy and reduced the effect of genre. The rankings changed noticeably, and songs that were closer to the target energy moved up even when they did not match the user’s genre as strongly.
+- Profile comparison experiment: I tested happy pop, chill lo-fi, intense rock, and an adversarial profile with conflicting preferences. The results shifted in ways that made sense for each profile, which helped confirm that the scoring logic was responding to the input.
 
 ---
 
 ## Limitations and Risks
 
-Summarize some limitations of your recommender.
+This recommender is still a simple classroom-style system, so it has a few important limits.
 
-Examples:
-
-- It only works on a tiny catalog
-- It does not understand lyrics or language
-- It might over favor one genre or mood
-
-You will go deeper on this in your model card.
+- It only works with a small catalog of songs, so it cannot capture the full diversity of real music.
+- It relies on a few hand-picked features and does not understand artist identity, lyrics, context, or personal taste history.
+- It can over-focus on one signal, such as energy, and create narrow or repetitive recommendations.
 
 ---
 
 ## Reflection
 
-Read and complete `model_card.md`:
+Working through this project helped me understand how recommenders turn simple signals into ranked choices. I learned that a system can look thoughtful even when it is using very basic rules, and that small changes in weighting can strongly affect the results. Using AI tools helped me move faster and organize the work, but I still had to check the outputs carefully because the system could sometimes produce results that looked sensible but were still too rigid. If I kept going, I would want to add more data, more features, and a more realistic way of modeling user taste.
 
-[**Model Card**](model_card.md)
+## Sample Recommendation Output
 
-Write 1 to 2 paragraphs here about what you learned:
-
-- about how recommenders turn data into predictions
-- about where bias or unfairness could show up in systems like this
-
-## Sample Recommendation Output 
-"""
-(.venv) meltingtech@meltingtech:~/codepath/ai110-module3show-musicrecommendersimulation-starter$ python -m src.main
-Loaded songs: 18
+```text
+User profile: favorite_genre=pop, favorite_mood=happy, target_energy=0.80, likes_acoustic=False
 
 Top recommendations:
-
-1. Sunrise City
-   Score: 4.46
-   Why: genre match (+2.0); mood match (+1.0); energy similarity (+0.98): close to target 0.80; valence aligned with mood; acousticness bonus (+0.24): not overly bright
-
-2. Gym Hero
-   Score: 3.33
-   Why: genre match (+2.0); mood mismatch; energy similarity (+0.87): close to target 0.80; valence aligned with mood; acousticness bonus (+0.21): not overly bright
-
-3. Rooftop Lights
-   Score: 2.42
-   Why: genre mismatch; mood match (+1.0); energy similarity (+0.96): close to target 0.80; valence aligned with mood; acousticness bonus (+0.21): not overly bright
-
-4. Velvet Static
-   Score: 1.40
-   Why: genre mismatch; mood mismatch; energy similarity (+0.94): close to target 0.80; valence aligned with mood; acousticness bonus (+0.22): not overly bright
-
-5. Neon Skyline
-   Score: 1.38
-   Why: genre mismatch; mood mismatch; energy similarity (+0.92): close to target 0.80; valence aligned with mood; acousticness bonus (+0.23): not overly bright
-"""
+1. Sunrise City — Score: 4.46
+2. Gym Hero — Score: 3.33
+3. Rooftop Lights — Score: 2.42
+```
 
 
