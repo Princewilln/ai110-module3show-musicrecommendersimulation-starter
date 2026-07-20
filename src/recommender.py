@@ -58,10 +58,7 @@ class Recommender:
 
 
 def load_songs(csv_path: str) -> List[Dict[str, Any]]:
-    """
-    Loads songs from a CSV file.
-    Required by src/main.py
-    """
+    """Load song records from a CSV file into a list of dictionaries."""
     songs: List[Dict[str, Any]] = []
     with open(csv_path, newline="", encoding="utf-8") as handle:
         reader = csv.DictReader(handle)
@@ -87,10 +84,7 @@ def load_songs(csv_path: str) -> List[Dict[str, Any]]:
 def score_song(
     user_prefs: Dict[str, Any], song: Dict[str, Any]
 ) -> Tuple[float, List[str]]:
-    """
-    Scores a single song against user preferences.
-    Required by recommend_songs() and src/main.py
-    """
+    """Score a song against a user profile and return a numeric rank plus explainable reasons."""
     prefs = _coerce_user_prefs(user_prefs)
     song_data = _coerce_song(song)
 
@@ -163,10 +157,7 @@ def score_song(
 def recommend_songs(
     user_prefs: Dict[str, Any], songs: List[Dict[str, Any]], k: int = 5
 ) -> List[Tuple[Dict[str, Any], float, str]]:
-    """
-    Functional implementation of the recommendation logic.
-    Required by src/main.py
-    """
+    """Rank songs by score and return the top-k recommendations with explanations."""
     scored = [
         (song, score, "; ".join(reasons))
         for song in songs
