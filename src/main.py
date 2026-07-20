@@ -14,6 +14,36 @@ from typing import Any, Dict, List
 from src.recommender import load_songs, recommend_songs
 
 
+def format_table(recommendations: List[tuple], k: int = 5) -> str:
+    headers = ["Rank", "Song", "Score", "Why"]
+    rows = []
+    for rank, rec in enumerate(recommendations[:k], start=1):
+        song, score, explanation = rec
+        rows.append(
+            [
+                str(rank),
+                f"{song['title']} by {song['artist']}",
+                f"{score:.2f}",
+                explanation,
+            ]
+        )
+
+    col_widths = [len(header) for header in headers]
+    for row in rows:
+        for idx, cell in enumerate(row):
+            col_widths[idx] = max(col_widths[idx], len(cell))
+
+    def format_row(values: List[str]) -> str:
+        return " | ".join(
+            value.ljust(col_widths[idx]) for idx, value in enumerate(values)
+        )
+
+    divider = "-+-".join("-" * width for width in col_widths)
+    lines = [format_row(headers), divider]
+    lines.extend(format_row(row) for row in rows)
+    return "\n".join(lines)
+
+
 def build_demo_profiles() -> List[Dict[str, Any]]:
     return [
         {
@@ -75,13 +105,8 @@ def print_profile_results(
         f"likes_acoustic={user_prefs.get('likes_acoustic')}"
     )
     print(f"\nTop {k} recommendations:\n")
-
-    for rank, rec in enumerate(recommendations, start=1):
-        song, score, explanation = rec
-        print(f"{rank}. {song['title']} by {song['artist']}")
-        print(f"   Score: {score:.2f}")
-        print(f"   Why: {explanation}")
-        print()
+    print(format_table(recommendations, k=k))
+    print()
 
 
 def main() -> None:

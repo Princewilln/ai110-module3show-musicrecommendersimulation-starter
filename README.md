@@ -13,6 +13,8 @@ Your goal is to:
 
 This project builds a small music recommender that simulates how a streaming service might connect a user’s taste profile to songs in a catalog. The system uses a simple content-based approach: it looks at song features like genre, mood, energy, and acousticness, compares them to a user’s preferences, and ranks songs by how well they match.
 
+A small stretch feature was also added so the terminal output is easier to read: each recommendation now appears in a simple table with the score and explanation for the ranking.
+
 ---
 
 ## How The System Works

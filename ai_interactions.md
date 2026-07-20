@@ -10,19 +10,20 @@
 
 **What task did you give the agent?**
 
-<!-- Describe the goal you asked the agent to accomplish -->
+I asked the AI assistant to help me improve the terminal output for the recommender so it would be easier to read and more useful for documentation.
 
 **Prompts used:**
 
-<!-- Paste the key prompts you gave the agent -->
+- “Help me format the top recommendations in the terminal as a readable table that includes the score and explanation for each song.”
+- “Keep the change simple and make sure it works with the existing recommender output.”
 
 **What did the agent generate or change?**
 
-<!-- List the files edited, code generated, or commands run -->
+The assistant suggested a simple ASCII table format and helped structure a helper function in the CLI runner so each recommendation prints as a row with rank, title, score, and explanation.
 
 **What did you verify or fix manually?**
 
-<!-- Describe anything the agent got wrong or that required human review -->
+I verified that the table printed correctly in the terminal and made sure the output still matched the existing ranking logic. I also adjusted the formatting so the explanations did not break the layout.
 
 ---
 
