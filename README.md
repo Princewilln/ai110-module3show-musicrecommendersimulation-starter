@@ -49,6 +49,10 @@ The recommendation rule is a simple weighted recipe built from the song catalog 
 
 This recipe gives genre a stronger influence than mood, while still letting the energy profile steer results when two songs share the same genre and mood. In practice, a song that matches the user’s favorite genre and mood and also sits near the target energy will rise to the top of the ranking.
 
+### Step 4: Visualizing the data flow
+
+A quick Mermaid flowchart showing how one song moves from the CSV into the ranked recommendation list is available in [docs/recommendation_flow.md](docs/recommendation_flow.md).
+
 ---
 
 ## Getting Started
@@ -88,15 +92,20 @@ You can add more tests in `tests/test_recommender.py`.
 
 ## Sample Recommendation Output
 
-Paste a sample of your recommender's output here as a text block so a reader can see what it produces:
+Here is a sample result from the current recommender for a user who likes pop, happy songs, and an energetic feel near 0.8:
 
-```
-# e.g.:
-# User profile: genre=indie, mood=chill, energy=low
-# Recommendations:
-#   1. ...
-#   2. ...
-#   3. ...
+```text
+User profile: favorite_genre=pop, favorite_mood=happy, target_energy=0.80, likes_acoustic=False
+
+Top recommendations:
+1. Sunrise City - Score: 4.46
+   Because: matched preferred genre; matched preferred mood; energy close to target 0.80; valence aligned with mood; acousticness was not overly bright
+
+2. Gym Hero - Score: 3.33
+   Because: matched preferred genre; mood did not match; energy close to target 0.80; valence aligned with mood; acousticness was not overly bright
+
+3. Rooftop Lights - Score: 2.42
+   Because: genre did not match; matched preferred mood; energy close to target 0.80; valence aligned with mood; acousticness was not overly bright
 ```
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
