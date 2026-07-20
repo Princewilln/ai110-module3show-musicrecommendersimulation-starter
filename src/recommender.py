@@ -80,7 +80,7 @@ def load_songs(csv_path: str) -> List[Dict[str, Any]]:
                     "acousticness": float(row["acousticness"]),
                 }
             )
-    print(f"Loading songs from {csv_path}...")
+    print(f"Loaded songs: {len(songs)}")
     return songs
 
 
