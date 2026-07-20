@@ -100,24 +100,27 @@ def score_song(
     if prefs.get("favorite_genre") and song_data.get("genre"):
         if song_data["genre"].lower() == prefs["favorite_genre"].lower():
             score += 2.0
-            reasons.append("matched preferred genre")
+            reasons.append("genre match (+2.0)")
         else:
-            reasons.append("genre did not match")
+            reasons.append("genre mismatch")
 
     if prefs.get("favorite_mood") and song_data.get("mood"):
         if song_data["mood"].lower() == prefs["favorite_mood"].lower():
             score += 1.0
-            reasons.append("matched preferred mood")
+            reasons.append("mood match (+1.0)")
         else:
-            reasons.append("mood did not match")
+            reasons.append("mood mismatch")
 
     target_energy = float(prefs.get("target_energy", 0.5))
     if song_data.get("energy") is not None:
         energy_similarity = max(
             0.0, 1.0 - abs(float(song_data["energy"]) - target_energy)
         )
-        score += 1.0 * energy_similarity
-        reasons.append(f"energy close to target {target_energy:.2f}")
+        energy_points = 1.0 * energy_similarity
+        score += energy_points
+        reasons.append(
+            f"energy similarity (+{energy_points:.2f}): close to target {target_energy:.2f}"
+        )
 
     mood_target_valence = _valence_target_for_mood(prefs.get("favorite_mood"))
     if song_data.get("valence") is not None:
@@ -135,8 +138,11 @@ def score_song(
         acoustic_similarity = 1.0 - abs(
             float(song_data["acousticness"]) - acoustic_target
         )
-        score += 0.25 * acoustic_similarity
-        reasons.append("acousticness matched the user's preference")
+        acoustic_points = 0.25 * acoustic_similarity
+        score += acoustic_points
+        reasons.append(
+            f"acousticness bonus (+{acoustic_points:.2f}): preferred acoustic profile"
+        )
     elif (
         prefs.get("likes_acoustic") is False
         and song_data.get("acousticness") is not None
@@ -145,8 +151,11 @@ def score_song(
         acoustic_similarity = 1.0 - abs(
             float(song_data["acousticness"]) - acoustic_target
         )
-        score += 0.25 * acoustic_similarity
-        reasons.append("acousticness was not overly bright")
+        acoustic_points = 0.25 * acoustic_similarity
+        score += acoustic_points
+        reasons.append(
+            f"acousticness bonus (+{acoustic_points:.2f}): not overly bright"
+        )
 
     return round(score, 4), reasons
 

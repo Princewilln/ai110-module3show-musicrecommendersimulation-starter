@@ -80,5 +80,5 @@ def test_score_song_uses_weighted_recipe_for_genre_mood_and_energy():
     score, reasons = score_song(user_prefs, song)
 
     assert score >= 3.0
-    assert "matched preferred genre" in reasons
-    assert "matched preferred mood" in reasons
+    assert "genre match (+2.0)" in reasons
+    assert "mood match (+1.0)" in reasons
