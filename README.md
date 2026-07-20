@@ -36,9 +36,18 @@ Real recommendation systems usually combine many signals, such as what a user ha
   - `target_energy`
   - `likes_acoustic`
 
-The recommender scores each song by rewarding strong matches for categorical preferences like genre and mood, and by rewarding numerical closeness for values such as energy and valence. Songs are then ranked from highest to lowest score and returned as recommendations.
+### Implementation plan
 
-### Step 3: Recommendation algorithm recipe
+The plan is to use the expanded catalog in [data/songs.csv](data/songs.csv) and a concrete example user profile with the following preferences:
+
+- favorite genre: `pop`
+- favorite mood: `happy`
+- target energy: `0.80`
+- likes acoustic: `False`
+
+The recommender will read the CSV, evaluate every song one by one, and assign a score using the finalized algorithm recipe below.
+
+### Finalized algorithm recipe
 
 The recommendation rule is a simple weighted recipe built from the song catalog in [data/songs.csv](data/songs.csv):
 
@@ -49,7 +58,11 @@ The recommendation rule is a simple weighted recipe built from the song catalog 
 
 This recipe gives genre a stronger influence than mood, while still letting the energy profile steer results when two songs share the same genre and mood. In practice, a song that matches the user’s favorite genre and mood and also sits near the target energy will rise to the top of the ranking.
 
-### Step 4: Visualizing the data flow
+### Expected biases
+
+This system may over-prioritize genre, which could cause it to miss some strong songs that match the user’s mood or energy very well but use a different genre. It also relies on a small handcrafted feature set, so it will not understand deeper musical context such as lyrics, artist identity, or listening history.
+
+### Visualizing the data flow
 
 A quick Mermaid flowchart showing how one song moves from the CSV into the ranked recommendation list is available in [docs/recommendation_flow.md](docs/recommendation_flow.md).
 
