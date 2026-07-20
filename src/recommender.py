@@ -99,22 +99,24 @@ def score_song(
 
     if prefs.get("favorite_genre") and song_data.get("genre"):
         if song_data["genre"].lower() == prefs["favorite_genre"].lower():
-            score += 0.40
+            score += 2.0
             reasons.append("matched preferred genre")
         else:
             reasons.append("genre did not match")
 
     if prefs.get("favorite_mood") and song_data.get("mood"):
         if song_data["mood"].lower() == prefs["favorite_mood"].lower():
-            score += 0.25
+            score += 1.0
             reasons.append("matched preferred mood")
         else:
             reasons.append("mood did not match")
 
     target_energy = float(prefs.get("target_energy", 0.5))
     if song_data.get("energy") is not None:
-        energy_similarity = 1.0 - abs(float(song_data["energy"]) - target_energy)
-        score += 0.20 * energy_similarity
+        energy_similarity = max(
+            0.0, 1.0 - abs(float(song_data["energy"]) - target_energy)
+        )
+        score += 1.0 * energy_similarity
         reasons.append(f"energy close to target {target_energy:.2f}")
 
     mood_target_valence = _valence_target_for_mood(prefs.get("favorite_mood"))
@@ -122,7 +124,7 @@ def score_song(
         valence_similarity = 1.0 - abs(
             float(song_data["valence"]) - mood_target_valence
         )
-        score += 0.10 * valence_similarity
+        score += 0.25 * valence_similarity
         reasons.append("valence aligned with mood")
 
     if (
@@ -133,7 +135,7 @@ def score_song(
         acoustic_similarity = 1.0 - abs(
             float(song_data["acousticness"]) - acoustic_target
         )
-        score += 0.05 * acoustic_similarity
+        score += 0.25 * acoustic_similarity
         reasons.append("acousticness matched the user's preference")
     elif (
         prefs.get("likes_acoustic") is False
@@ -143,7 +145,7 @@ def score_song(
         acoustic_similarity = 1.0 - abs(
             float(song_data["acousticness"]) - acoustic_target
         )
-        score += 0.05 * acoustic_similarity
+        score += 0.25 * acoustic_similarity
         reasons.append("acousticness was not overly bright")
 
     return round(score, 4), reasons

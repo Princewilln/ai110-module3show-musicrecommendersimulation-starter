@@ -1,4 +1,5 @@
-from src.recommender import Song, UserProfile, Recommender
+from src.recommender import Song, UserProfile, Recommender, score_song
+
 
 def make_small_recommender() -> Recommender:
     songs = [
@@ -59,3 +60,25 @@ def test_explain_recommendation_returns_non_empty_string():
     explanation = rec.explain_recommendation(user, song)
     assert isinstance(explanation, str)
     assert explanation.strip() != ""
+
+
+def test_score_song_uses_weighted_recipe_for_genre_mood_and_energy():
+    user_prefs = {
+        "favorite_genre": "pop",
+        "favorite_mood": "happy",
+        "target_energy": 0.8,
+        "likes_acoustic": False,
+    }
+    song = {
+        "genre": "pop",
+        "mood": "happy",
+        "energy": 0.8,
+        "valence": 0.9,
+        "acousticness": 0.2,
+    }
+
+    score, reasons = score_song(user_prefs, song)
+
+    assert score >= 3.0
+    assert "matched preferred genre" in reasons
+    assert "matched preferred mood" in reasons

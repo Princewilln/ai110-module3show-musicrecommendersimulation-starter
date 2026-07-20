@@ -38,6 +38,17 @@ Real recommendation systems usually combine many signals, such as what a user ha
 
 The recommender scores each song by rewarding strong matches for categorical preferences like genre and mood, and by rewarding numerical closeness for values such as energy and valence. Songs are then ranked from highest to lowest score and returned as recommendations.
 
+### Step 3: Recommendation algorithm recipe
+
+The recommendation rule is a simple weighted recipe built from the song catalog in [data/songs.csv](data/songs.csv):
+
+- +2.0 points for a genre match
+- +1.0 point for a mood match
+- +1.0 point scaled by energy similarity, where a perfect energy match earns the full point and a larger gap earns less
+- smaller bonus points for valence and acousticness to keep the system interpretable
+
+This recipe gives genre a stronger influence than mood, while still letting the energy profile steer results when two songs share the same genre and mood. In practice, a song that matches the user’s favorite genre and mood and also sits near the target energy will rise to the top of the ranking.
+
 ---
 
 ## Getting Started
