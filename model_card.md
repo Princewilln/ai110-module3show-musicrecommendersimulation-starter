@@ -2,60 +2,31 @@
 
 ## 1. Model Name  
 
-Give your model a short, descriptive name.  
-Example: **VibeFinder 1.0**  
+**VibeFinder 1.0**
 
 ---
 
 ## 2. Intended Use  
 
-Describe what your recommender is designed to do and who it is for. 
-
-Prompts:  
-
-- What kind of recommendations does it generate  
-- What assumptions does it make about the user  
-- Is this for real users or classroom exploration  
+This recommender is designed for classroom-style exploration of how content-based recommendation systems work. It suggests songs based on a simple user profile, such as favorite genre, mood, energy level, and whether the user likes acoustic sounds. It assumes the user can describe their taste in a few clear terms, which is helpful for testing the logic but not a full picture of real music listening.
 
 ---
 
 ## 3. How the Model Works  
 
-Explain your scoring approach in simple language.  
-
-Prompts:  
-
-- What features of each song are used (genre, energy, mood, etc.)  
-- What user preferences are considered  
-- How does the model turn those into a score  
-- What changes did you make from the starter logic  
-
-Avoid code here. Pretend you are explaining the idea to a friend who does not program.
+The recommender looks at each song and compares it to a user’s taste profile. It pays attention to genre, mood, energy, and a few other musical traits such as valence and acousticness. A song gets a higher score when it matches the user’s preferred genre and mood, and it also gets a boost when its energy level is close to the target. I also added an experiment where energy became more important than genre to test how sensitive the system is to its own weights.
 
 ---
 
 ## 4. Data  
 
-Describe the dataset the model uses.  
-
-Prompts:  
-
-- How many songs are in the catalog  
-- What genres or moods are represented  
-- Did you add or remove data  
-- Are there parts of musical taste missing in the dataset  
+The system uses a small catalog of 18 songs. Each song includes basic features such as title, artist, genre, mood, energy, and acousticness. The dataset covers a mix of pop, lo-fi, rock, jazz, indie, and other styles, but it is still very limited. Because the catalog is small, the recommender can only learn from a narrow range of musical examples, and it does not include deeper features like lyrics, artist history, or listening behavior.
 
 ---
 
 ## 5. Strengths  
 
-Where does your system seem to work well  
-
-Prompts:  
-
-- User types for which it gives reasonable results  
-- Any patterns you think your scoring captures correctly  
-- Cases where the recommendations matched your intuition  
+This system works best when a user has clear and simple preferences. It does a decent job for profiles like “happy pop” or “calm lo-fi” because those preferences are easy to match with the available features. It also gives explanations for why each song was recommended, which makes the behavior easier to understand than a black-box system. In those cases, the results often felt intuitive and easy to explain.
 
 ---
 
@@ -99,23 +70,10 @@ I also ran a small experiment by changing the weights so energy mattered more an
 
 ## 8. Future Work  
 
-Ideas for how you would improve the model next.  
-
-Prompts:  
-
-- Additional features or preferences  
-- Better ways to explain recommendations  
-- Improving diversity among the top results  
-- Handling more complex user tastes  
+If I kept developing this, I would add more data so the recommender could learn from a larger and more diverse catalog. I would also include more user preferences, such as artist likes, tempo, or favorite decade, so the system could capture more realistic taste. Another improvement would be to make the recommendations more diverse so the top results do not all feel too similar.
 
 ---
 
 ## 9. Personal Reflection  
 
-A few sentences about your experience.  
-
-Prompts:  
-
-- What you learned about recommender systems  
-- Something unexpected or interesting you discovered  
-- How this changed the way you think about music recommendation apps  
+The biggest lesson for me was that even a simple recommender can feel surprisingly convincing when the scoring rules are clear and consistent. I was also surprised by how much a small change in the weights could change the whole ranking, which showed me that recommendation systems are very sensitive to the design choices behind them. Using AI tools helped me move faster and structure the project, but I still had to double-check the outputs carefully because the system could look confident while still making obvious mistakes. If I extended this project, I would want to build a more realistic model that uses more user history and a bigger music catalog.
