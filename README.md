@@ -125,6 +125,131 @@ Top recommendations:
 
 ---
 
+## Phase 4: Evaluation and Explanation
+
+I stress-tested the recommender with four deliberately different user profiles to see how the scoring logic behaves under both ordinary and edge-case conditions. Run the recommender in your terminal and paste the output into the sections below.
+
+```bash
+python -m src.main
+```
+
+### Profile 1 — High-Energy Pop
+
+```t(.venv) meltingtech@meltingtech:~/codepath/ai110-module3show-musicrecommendersimulation-starter$ python -m src.main
+Loaded songs: 18
+
+Profile: High-Energy Pop
+User prefs: favorite_genre=pop, favorite_mood=happy, target_energy=0.8, likes_acoustic=False
+
+Top 5 recommendations:
+
+1. Sunrise City by Neon Echo
+   Score: 4.46
+   Why: genre match (+2.0); mood match (+1.0); energy similarity (+0.98): close to target0.80; valence aligned with mood; acousticness bonus (+0.24): not overly bright
+
+2. Gym Hero by Max Pulse
+   Score: 3.33
+   Why: genre match (+2.0); mood mismatch; energy similarity (+0.87): close to target 0.80; valence aligned with mood; acousticness bonus (+0.21): not overly bright
+
+3. Rooftop Lights by Indigo Parade
+   Score: 2.42
+   Why: genre mismatch; mood match (+1.0); energy similarity (+0.96): close to target 0.80; valence aligned with mood; acousticness bonus (+0.21): not overly bright
+
+4. Velvet Static by Nyra Lane
+   Score: 1.40
+   Why: genre mismatch; mood mismatch; energy similarity (+0.94): close to target 0.80; valence aligned with mood; acousticness bonus (+0.22): not overly bright
+
+5. Neon Skyline by Aria Vale
+   Score: 1.38
+   Why: genre mismatch; mood mismatch; energy similarity (+0.92): close to target 0.80; valence aligned with mood; acousticness bonus (+0.23): not overly bright
+
+
+Profile: Chill Lofi
+User prefs: favorite_genre=lofi, favorite_mood=chill, target_energy=0.35, likes_acoustic=True
+
+Top 5 recommendations:
+
+1. Library Rain by Paper Lanterns
+   Score: 4.49
+   Why: genre match (+2.0); mood match (+1.0); energy similarity (+1.00): close to target0.35; valence aligned with mood; acousticness bonus (+0.24): preferred acoustic profile
+
+2. Midnight Coding by LoRoom
+   Score: 4.40
+   Why: genre match (+2.0); mood match (+1.0); energy similarity (+0.93): close to target0.35; valence aligned with mood; acousticness bonus (+0.23): preferred acoustic profile
+
+3. Focus Flow by LoRoom
+   Score: 3.44
+   Why: genre match (+2.0); mood mismatch; energy similarity (+0.95): close to target 0.35; valence aligned with mood; acousticness bonus (+0.24): preferred acoustic profile
+
+4. Spacewalk Thoughts by Orbit Bloom
+   Score: 2.39
+   Why: genre mismatch; mood match (+1.0); energy similarity (+0.93): close to target 0.35; valence aligned with mood; acousticness bonus (+0.22): preferred acoustic profile
+
+5. Coffee Shop Stories by Slow Stereo
+   Score: 1.43
+   Why: genre mismatch; mood mismatch; energy similarity (+0.98): close to target 0.35; valence aligned with mood; acousticness bonus (+0.23): preferred acoustic profile
+
+
+Profile: Deep Intense Rock
+User prefs: favorite_genre=rock, favorite_mood=intense, target_energy=0.9, likes_acoustic=False
+
+Top 5 recommendations:
+
+1. Storm Runner by Voltline
+   Score: 4.45
+   Why: genre match (+2.0); mood match (+1.0); energy similarity (+0.99): close to target0.90; valence aligned with mood; acousticness bonus (+0.23): not overly bright
+
+2. Gym Hero by Max Pulse
+   Score: 2.34
+   Why: genre mismatch; mood match (+1.0); energy similarity (+0.97): close to target 0.90; valence aligned with mood; acousticness bonus (+0.21): not overly bright
+
+3. Neon Skyline by Aria Vale
+   Score: 1.38
+   Why: genre mismatch; mood mismatch; energy similarity (+0.98): close to target 0.90; valence aligned with mood; acousticness bonus (+0.23): not overly bright
+
+4. Iron Harbor by Stonecrest
+   Score: 1.37
+   Why: genre mismatch; mood mismatch; energy similarity (+0.95): close to target 0.90; valence aligned with mood; acousticness bonus (+0.21): not overly bright
+
+5. Velvet Static by Nyra Lane
+   Score: 1.34
+   Why: genre mismatch; mood mismatch; energy similarity (+0.96): close to target 0.90; valence aligned with mood; acousticness bonus (+0.22): not overly bright
+
+
+Profile: Adversarial Conflicting Preferences
+User prefs: favorite_genre=rock, favorite_mood=sad, target_energy=0.9, likes_acoustic=False
+
+Top 5 recommendations:
+
+1. Storm Runner by Voltline
+   Score: 3.44
+   Why: genre match (+2.0); mood mismatch; energy similarity (+0.99): close to target 0.90; valence aligned with mood; acousticness bonus (+0.23): not overly bright
+
+2. Neon Skyline by Aria Vale
+   Score: 1.43
+   Why: genre mismatch; mood mismatch; energy similarity (+0.98): close to target 0.90; valence aligned with mood; acousticness bonus (+0.23): not overly bright
+
+3. Velvet Static by Nyra Lane
+   Score: 1.40
+   Why: genre mismatch; mood mismatch; energy similarity (+0.96): close to target 0.90; valence aligned with mood; acousticness bonus (+0.22): not overly bright
+
+4. Gym Hero by Max Pulse
+   Score: 1.39
+   Why: genre mismatch; mood mismatch; energy similarity (+0.97): close to target 0.90; valence aligned with mood; acousticness bonus (+0.21): not overly bright
+
+5. Sunrise City by Neon Echo
+   Score: 1.35
+   Why: genre mismatch; mood mismatch; energy similarity (+0.92): close to target 0.90; valence aligned with mood; acousticness bonus (+0.24): not overly bright
+
+(.venv) meltingtech@meltingtech:~/codepath/ai110-module3show-musicrecommendersimulation-starter$ 
+```
+
+### What these results suggest
+
+- The recommender strongly favors exact genre and mood matches, which makes it feel predictable but also a bit rigid.
+- Energy similarity can push a song upward even when it misses on genre or mood, showing that the scoring recipe balances multiple signals.
+- The adversarial profile shows that the current logic can still return high-energy songs even when the user mood is contradictory, which is a useful reminder that the system is rule-based rather than emotionally nuanced.
+
 ## Experiments You Tried
 
 Use this section to document the experiments you ran. For example:
@@ -160,5 +285,32 @@ Write 1 to 2 paragraphs here about what you learned:
 - about how recommenders turn data into predictions
 - about where bias or unfairness could show up in systems like this
 
+## Sample Recommendation Output 
+"""
+(.venv) meltingtech@meltingtech:~/codepath/ai110-module3show-musicrecommendersimulation-starter$ python -m src.main
+Loaded songs: 18
+
+Top recommendations:
+
+1. Sunrise City
+   Score: 4.46
+   Why: genre match (+2.0); mood match (+1.0); energy similarity (+0.98): close to target 0.80; valence aligned with mood; acousticness bonus (+0.24): not overly bright
+
+2. Gym Hero
+   Score: 3.33
+   Why: genre match (+2.0); mood mismatch; energy similarity (+0.87): close to target 0.80; valence aligned with mood; acousticness bonus (+0.21): not overly bright
+
+3. Rooftop Lights
+   Score: 2.42
+   Why: genre mismatch; mood match (+1.0); energy similarity (+0.96): close to target 0.80; valence aligned with mood; acousticness bonus (+0.21): not overly bright
+
+4. Velvet Static
+   Score: 1.40
+   Why: genre mismatch; mood mismatch; energy similarity (+0.94): close to target 0.80; valence aligned with mood; acousticness bonus (+0.22): not overly bright
+
+5. Neon Skyline
+   Score: 1.38
+   Why: genre mismatch; mood mismatch; energy similarity (+0.92): close to target 0.80; valence aligned with mood; acousticness bonus (+0.23): not overly bright
+"""
 
 
